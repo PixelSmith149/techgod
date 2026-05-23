@@ -1,23 +1,19 @@
 "use client";
 
-import { useState } from "react";
 import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("");
 
-  const login = async () => {
-    const { error } = await supabase.auth.signInWithOtp({
-      email,
+  const loginWithGoogle = async () => {
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: "google",
       options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-    }
-  });
+        redirectTo: `${window.location.origin}/auth/callback`
+      },
+    });
 
     if (error) {
       alert(error.message);
-    } else {
-      alert("Magic login link sent to your email");
     }
   };
 
@@ -34,19 +30,13 @@ export default function LoginPage() {
           Access your premium digital products securely.
         </p>
 
-        <input
-          type="email"
-          placeholder="Your Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="mt-6 w-full rounded-2xl border border-white/10 bg-black/40 p-4 outline-none"
-        />
+        {/* NO EMAIL INPUT NEEDED ANYMORE */}
 
         <button
-          onClick={login}
-          className="mt-5 w-full rounded-2xl bg-green-500 py-4 font-bold text-black"
+          onClick={loginWithGoogle}
+          className="mt-6 w-full rounded-2xl bg-white py-4 font-bold text-black"
         >
-          Continue
+          Continue with Google
         </button>
 
       </div>
