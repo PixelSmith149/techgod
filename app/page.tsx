@@ -13,6 +13,8 @@ import {
   FaTelegramPlane,
 } from "react-icons/fa";
 
+import Image from "next/image";
+
 const socialLinks = [
   {
     name: "YouTube",
@@ -61,18 +63,18 @@ export default function Home() {
               group
               rounded-2xl
               border border-white/10
-              bg-green/500
+              bg-green-500/50
               p-3
               backdrop-blur-xl
               transition-all
               duration-300
-              hover:bg-dark-grey/10
+              hover:bg-green-500/10
               hover:border-green-500/30
               hover:shadow-[0_0_30px_rgba(34,197,94,0.2)]
             "
           >
             <Contact
-              size={20}
+              size={25}
               className="transition-transform duration-300 group-hover:scale-110"
             />
           </a>
@@ -82,41 +84,50 @@ export default function Home() {
         {/* PROFILE SECTION */}
         <div className="mt-6 flex flex-col items-center">
 
-          <div className="relative">
+         <div className="relative w-full max-w-3xl">
 
-            <div className="absolute inset-0 rounded-full bg-green-500/20 blur-2xl" />
-
-            <img
-              src="/profile.jpg"
-              alt="profile"
-              className="
-                relative
-                h-32
-                w-32
-                rounded-full
-                border-4
-                border-white/10
-                object-cover
-                shadow-2xl
-              "
-            />
+       {/* glow effect */}
+          <div className="absolute inset-0 rounded-2xl bg-green-500/20 blur-2xl" />
+           <Image
+  src="/profile.webp"
+  alt="profile"
+  width={1200}
+  height={600}
+  priority
+  sizes="(max-width: 768px) 100vw, 1200px"
+  className="
+    relative
+    w-full
+    h-64
+    md:h-80
+    rounded-2xl
+    object-cover
+    border-4
+    border-white/10
+    shadow-2xl
+  "
+/>
 
           </div>
 
-          <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-center">
-            TECH GOD's HUB
-          </h1>
+         </div>
 
-          <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-green-400 to-emerald-600" />
+        </div>
 
-          <p className="mt-6 text-center text-gray-400 leading-7 text-[15px]">
-            Tech Creator • Web Developer • Data Analysis Expert 
-                        CRM & Growth Manager 
-            Sharing tech knowledge, premium digital products,
-            softwares, tutorials, gadget reviews & advanced phone hacks.
-            Available for collaborations & business partnerships.
-            </p>
-            </div>
+             <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-center">
+               TECH GOD's HUB
+             </h1>
+
+             <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-green-400 to-emerald-600" />
+
+              <p className="mt-6 text-center text-gray-400 leading-7 text-[15px]">
+                Tech Creator • Web Developer • Data Analysis Expert 
+                            CRM & Growth Manager 
+                Sharing tech knowledge, premium digital products,
+                softwares, tutorials, gadget reviews & advanced phone hacks.
+                Available for collaborations & business partnerships.
+              </p>
+
 
         {/* SOCIAL LINKS */}
         <div className="mt-12 flex flex-col gap-4">
@@ -247,8 +258,7 @@ export default function Home() {
 
         </div>
 
-      </div>
+      </main>
 
-    </main>
   );
 }

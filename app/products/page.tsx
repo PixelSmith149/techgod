@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowLeft, ShieldCheck, Lock, Sparkles } from "lucide-react";
 import PayButton from "@/components/PayButton";
 
+
 const products = [
   {
     id: "creator-system",
@@ -40,6 +41,15 @@ const products = [
 export default function Products() {
   return (
     <main className="min-h-screen bg-black text-white px-5 py-6">
+      
+      <div className="flex justify-end mb-4">
+        <Link
+          href="/login"
+          className="px-5 py-2 bg-white/10 hover:bg-green-500/20 rounded-xl"
+       >
+          Sign in
+        </Link>
+     </div>
 
       <div className="mx-auto max-w-md">
 
@@ -56,7 +66,7 @@ export default function Products() {
             "
           >
             <ArrowLeft size={18} />
-            Home
+            Return Home
           </Link>
 
           <h1 className="text-lg md:text-xl font-bold text-center">
