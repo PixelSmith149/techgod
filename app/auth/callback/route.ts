@@ -11,9 +11,11 @@ export async function GET(req: Request) {
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
   );
 
+  // ✅ PKCE flow
   if (code) {
     await supabase.auth.exchangeCodeForSession(code);
   }
 
+  // safety: remove hash if fallback ever happens
   return NextResponse.redirect(`${origin}/dashboard`);
 }

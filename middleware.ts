@@ -4,29 +4,28 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // ONLY protect these routes
-  const protectedRoutes = [
-    "/dashboard",
-    "/admin",
-    "/access",
-  ];
+  const protectedRoutes = ["/dashboard", "/admin", "/access"];
 
   const isProtected = protectedRoutes.some((route) =>
     pathname.startsWith(route)
   );
 
-  // allow everything else normally
+  // ❌ NEVER block auth routes
+  if (
+    pathname.startsWith("/login") ||
+    pathname.startsWith("/auth/callback")
+  ) {
+    return NextResponse.next();
+  }
+
   if (!isProtected) {
     return NextResponse.next();
   }
 
-  // check Supabase auth cookie
-  const hasSession =
-    req.cookies.get("sb-access-token") ||
-    req.cookies.get("sb-refresh-token");
+  // ⚠️ SAFE: let Supabase client handle session
+  const session = req.cookies.get("sb-access-token");
 
-  // if not logged in
-  if (!hasSession) {
+  if (!session) {
     return NextResponse.redirect(new URL("/login", req.url));
   }
 
