@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
+import { Analytics } from "@vercel/analytics/next"
 <script src="https://js.paystack.co/v1/inline.js"></script>
 
 const geistSans = Geist({
