@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { createSupabaseServer } from "@/lib/supabase-server";
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(req: Request) {
   try {
+    const supabase = createSupabaseServer();
     const { email, name, product, link } = await req.json();
 
     await resend.emails.send({
@@ -50,9 +51,9 @@ export async function POST(req: Request) {
       `,
     });
 
-    return NextResponse.json({ success: true });
+    return Response.json({ success: true });
 
   } catch (error) {
-    return NextResponse.json({ success: false });
+    return Response.json({ success: false });
   }
 }

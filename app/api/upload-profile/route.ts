@@ -1,14 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
+import { createSupabaseServer } from "@/lib/supabase-server";
 import { writeFile } from 'fs/promises';
 import path from 'path';
 
-export async function POST(request: NextRequest) {
+
+export async function POST(request: Request) {
   try {
+    const supabase = createSupabaseServer();
     const formData = await request.formData();
     const file = formData.get('profilePic') as File | null;
 
     if (!file) {
-      return NextResponse.json(
+      return Response.json(
         { success: false, message: 'No file uploaded' },
         { status: 400 }
       );
@@ -17,7 +19,7 @@ export async function POST(request: NextRequest) {
     // Validate file type
     const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
     if (!allowedTypes.includes(file.type)) {
-      return NextResponse.json(
+      return Response.json(
         { success: false, message: 'Only JPG, PNG and WebP images are allowed' },
         { status: 400 }
       );
@@ -25,7 +27,7 @@ export async function POST(request: NextRequest) {
 
     // Validate file size (max 5MB)
     if (file.size > 5 * 1024 * 1024) {
-      return NextResponse.json(
+      return Response.json(
         { success: false, message: 'File size must be less than 5MB' },
         { status: 400 }
       );
@@ -60,7 +62,7 @@ export async function POST(request: NextRequest) {
     // Public URL path
     const imageUrl = `/uploads/profile-pics/${filename}`;
 
-    return NextResponse.json({
+    return Response.json({
       success: true,
       message: 'Profile picture uploaded successfully',
       imageUrl: imageUrl,
@@ -68,7 +70,7 @@ export async function POST(request: NextRequest) {
 
   } catch (error) {
     console.error('Upload error:', error);
-    return NextResponse.json(
+    return Response.json(
       { success: false, message: 'Failed to upload image' },
       { status: 500 }
     );

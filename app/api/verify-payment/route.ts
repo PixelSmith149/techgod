@@ -1,10 +1,13 @@
-import { NextResponse } from "next/server";
+import { createSupabaseServer } from "@/lib/supabase-server";
 import fs from "fs";
 import path from "path";
+
 
 export async function POST(req: Request) {
 
   try {
+
+    const supabase = createSupabaseServer();
 
     const body = await req.json();
 
@@ -56,19 +59,19 @@ export async function POST(req: Request) {
         JSON.stringify(purchases, null, 2)
       );
 
-      return NextResponse.json({
+      return Response.json({
         success: true,
       });
 
     }
 
-    return NextResponse.json({
+    return Response.json({
       success: false,
     });
 
   } catch (error) {
 
-    return NextResponse.json({
+    return Response.json({
       success: false,
       error,
     });
