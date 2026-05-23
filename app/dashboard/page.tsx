@@ -114,6 +114,16 @@ useEffect(() => {
         setProducts(data.products || []);
       } catch (error) {
         console.log(error);
+
+        const {
+         data: { user },
+         } = await supabase.auth.getUser();
+
+         const { data: purchases } = await supabase
+          .from("purchases")
+          .select("*")
+          .eq("email", user?.email);
+
       }
     }
 
