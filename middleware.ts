@@ -4,34 +4,27 @@ import type { NextRequest } from "next/server";
 export function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  const protectedRoutes = ["/dashboard", "/admin", "/access"];
+  // ONLY protect admin routes
+  const isAdminRoute = pathname.startsWith("/admin");
 
-  const isProtected = protectedRoutes.some((route) =>
-    pathname.startsWith(route)
-  );
-
-  // ❌ NEVER block auth routes
-  if (
-    pathname.startsWith("/login") ||
-    pathname.startsWith("/auth/callback")
-  ) {
+  // allow everything else (including dashboard, login, auth callback)
+  if (!isAdminRoute) {
     return NextResponse.next();
   }
 
-  if (!isProtected) {
-    return NextResponse.next();
-  }
+  // simple admin auth check (your localStorage system cannot be checked here server-side properly)
+  // so for now just allow access OR later replace with Supabase admin session
 
-  // ⚠️ SAFE: let Supabase client handle session
-  const session = req.cookies.get("sb-access-token");
+  const adminSession = req.cookies.get("admin_access");
 
-  if (!session) {
-    return NextResponse.redirect(new URL("/login", req.url));
+  if (!adminSession) {
+    return NextResponse.redirect(new URL("/admin/login", req.url));
   }
 
   return NextResponse.next();
 }
 
+// IMPORTANT: only match admin routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/admin/:path*", "/access/:path*"],
+  matcher: ["/admin/:path*"],
 };
