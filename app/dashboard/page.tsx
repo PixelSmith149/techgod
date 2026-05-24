@@ -48,9 +48,9 @@ export default function DashboardPage() {
         const { data } = await supabase.auth.getUser();
 
         if (!data?.user) {
-          window.location.href = "/login";
-          return;
-        }
+  window.location.replace("/login");
+  return;
+}
 
         const currentUser = data.user;
 
@@ -221,24 +221,14 @@ export default function DashboardPage() {
 
             <div className="flex flex-wrap gap-3">
 
-              <button
-                onClick={() => {
-                  setDarkMode(!darkMode);
+              const next = !darkMode;
+                setDarkMode(next);
 
-                  if (!darkMode) {
-                    document.documentElement.classList.add("dark");
-                  } else {
-                    document.documentElement.classList.remove("dark");
-                  }
-                }}
-                className="flex items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm"
-              >
-
-                <Moon size={16} />
-
-                {darkMode ? "Dark Mode" : "Light Mode"}
-
-              </button>
+              if (next) 
+                 document.documentElement.classList.add("dark");
+                
+                 document.documentElement.classList.remove("dark");
+                
 
               <Link
                 href="/settings"
@@ -302,39 +292,27 @@ export default function DashboardPage() {
 
         <div className="grid gap-5 md:grid-cols-4 mt-6">
 
-          <a
-            href="https://www.tiktok.com/@techgod30"
-            target="_blank"
-            className="rounded-2xl bg-green-500/20 px-6 py-3 font-bold text-center"
-          >
-            TikTok
-          </a>
+  <a className="rounded-2xl bg-green-500/20 p-4 text-center font-bold hover:scale-105 transition"
+     href="https://www.tiktok.com/@techgod30" target="_blank">
+    TikTok
+  </a>
 
-          <a
-            href="https://youtube.com/@techgod30"
-            target="_blank"
-            className="rounded-2xl bg-red-500/20 px-6 py-3 font-bold text-center"
-          >
-            YouTube
-          </a>
+  <a className="rounded-2xl bg-red-500/20 p-4 text-center font-bold hover:scale-105 transition"
+     href="https://youtube.com/@techgod30" target="_blank">
+    YouTube
+  </a>
 
-          <a
-            href="https://instagram.com"
-            target="_blank"
-            className="rounded-2xl bg-pink-500/20 px-6 py-3 font-bold text-center"
-          >
-            Instagram
-          </a>
+  <a className="rounded-2xl bg-pink-500/20 p-4 text-center font-bold hover:scale-105 transition"
+     href="https://instagram.com" target="_blank">
+    Instagram
+  </a>
 
-          <a
-            href="https://facebook.com"
-            target="_blank"
-            className="rounded-2xl bg-blue-500/20 px-6 py-3 font-bold text-center"
-          >
-            Facebook
-          </a>
+  <a className="rounded-2xl bg-blue-500/20 p-4 text-center font-bold hover:scale-105 transition"
+     href="https://facebook.com" target="_blank">
+    Facebook
+  </a>
 
-        </div>
+</div>
 
         {/* STATS */}
 
