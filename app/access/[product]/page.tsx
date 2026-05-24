@@ -1,45 +1,77 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams, useRouter } from "next/navigation";
+
+import {
+  useParams,
+  useSearchParams,
+  useRouter,
+} from "next/navigation";
+
+import { supabase } from "@/lib/supabase";
 
 export default function AccessPage() {
+
   const { product } = useParams();
+
   const searchParams = useSearchParams();
+
   const router = useRouter();
 
   const token = searchParams.get("token");
 
-  const [loading, setLoading] = useState(true);
-  const [access, setAccess] = useState(false);
+  const [loading, setLoading] =
+    useState(true);
+
+  const [access, setAccess] =
+    useState(false);
 
   useEffect(() => {
-    const email = localStorage.getItem("user_email");
 
-    if (!email || !token) {
+    checkAccess();
+
+  }, [product, token]);
+
+  async function checkAccess() {
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user || !token || !product) {
       router.push("/products");
       return;
     }
 
-    fetch("/api/check-access", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        email,
-        product,
-        token,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        setAccess(data.access);
-        setLoading(false);
+    const email = user.email;
 
-        if (!data.access) {
-          router.push("/products");
-        }
-      });
-  }, []);
+    const res = await fetch(
+      "/api/check-access",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type":
+            "application/json",
+        },
+        body: JSON.stringify({
+          email,
+          product,
+          token,
+          user_id: user.id,
+        }),
+      }
+    );
+
+    const data = await res.json();
+
+    setAccess(data.access);
+
+    setLoading(false);
+
+    if (!data.access) {
+      router.push("/products");
+    }
+  }
 
   if (loading) {
     return (
@@ -53,16 +85,23 @@ export default function AccessPage() {
 
   return (
     <div className="min-h-screen bg-black text-white p-10">
-      <h1 className="text-2xl font-bold">🔓 Premium Access Granted</h1>
+
+      <h1 className="text-2xl font-bold">
+        🔓 Premium Access Granted
+      </h1>
 
       <p className="mt-4 text-gray-400">
         Product: {product}
       </p>
 
       <div className="mt-6 p-6 rounded-xl bg-white/5 border border-white/10">
+
         <p className="text-gray-300">
-          Your premium content is unlocked securely via token system.
+
+          Your premium content is unlocked securely via verified Supabase session + database check.
+
         </p>
+
       </div>
 
       <a
@@ -71,6 +110,7 @@ export default function AccessPage() {
       >
         Open Content
       </a>
+
     </div>
   );
 }

@@ -1,112 +1,47 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
-
-export default function AdminDashboard() {
-  const [stats, setStats] = useState({
-    users: 0,
-    products: 0,
-    revenue: 0,
-  });
+export default function AdminHome() {
+  const router = useRouter();
 
   useEffect(() => {
+    const isAdmin = localStorage.getItem("admin_access");
+    if (!isAdmin) router.push("/admin/login");
+  }, []);
 
-  const adminEmail =
-    localStorage.getItem("admin_email");
-
-  if (!adminEmail) {
-
-    window.location.href = "/dashboard";
-    return;
-
+  function go(tab: string) {
+    router.push(`/admin/dashboard?tab=${tab}`);
   }
-
-  loadStats();
-
-}, []);
-
-  async function loadStats() {
-
-  try {
-
-    const users = await supabase
-      .from("users")
-      .select("*", {
-        count: "exact",
-        head: true,
-      });
-
-    const products = await supabase
-      .from("products")
-      .select("*", {
-        count: "exact",
-        head: true,
-      });
-
-    const purchases = await supabase
-      .from("purchases")
-      .select("amount");
-
-    const revenue =
-      purchases.data?.reduce(
-        (sum: number, p: any) =>
-          sum + (p.amount || 0),
-        0
-      ) || 0;
-
-    setStats({
-      users: users.count || 0,
-      products: products.count || 0,
-      revenue,
-    });
-
-  } catch (error) {
-
-    console.log(error);
-
-  }
-
-}
 
   return (
-    <main className="min-h-screen bg-black text-white p-6">
-      <h1 className="text-3xl font-bold">Admin Dashboard</h1>
+    <main className="min-h-screen bg-black text-white p-10">
 
-      {/* STATS */}
-      <div className="grid md:grid-cols-3 gap-5 mt-8">
-        <div className="p-5 bg-white/5 rounded-2xl">
-          <p className="text-gray-400">Users</p>
-          <h2 className="text-2xl font-bold">{stats.users}</h2>
-        </div>
+      <h1 className="text-3xl font-bold mb-10">
+        Admin Control Hub
+      </h1>
 
-        <div className="p-5 bg-white/5 rounded-2xl">
-          <p className="text-gray-400">Products</p>
-          <h2 className="text-2xl font-bold">{stats.products}</h2>
-        </div>
+      <div className="grid md:grid-cols-2 gap-5">
 
-        <div className="p-5 bg-white/5 rounded-2xl">
-          <p className="text-gray-400">Revenue</p>
-          <h2 className="text-2xl font-bold">${stats.revenue}</h2>
-        </div>
+        <button onClick={() => go("analytics")} className="p-6 bg-white/5 rounded-xl">
+          📊 View Analytics
+        </button>
+
+        <button onClick={() => go("users")} className="p-6 bg-white/5 rounded-xl">
+          👥 Manage Users
+        </button>
+
+        <button onClick={() => go("products")} className="p-6 bg-white/5 rounded-xl">
+          🛒 Manage Products
+        </button>
+
+        <button onClick={() => go("purchases")} className="p-6 bg-white/5 rounded-xl">
+          💰 Purchases
+        </button>
+
       </div>
 
-      {/* NAVIGATION */}
-      <div className="mt-10 grid md:grid-cols-3 gap-4">
-        <Link href="/admin/products" className="p-5 bg-green-500 text-black rounded-2xl font-bold">
-          Manage Products
-        </Link>
-
-        <Link href="/admin/users" className="p-5 bg-white/10 rounded-2xl">
-          View Users
-        </Link>
-
-        <Link href="/admin/analytics" className="p-5 bg-white/10 rounded-2xl">
-          Analytics
-        </Link>
-      </div>
     </main>
   );
 }
