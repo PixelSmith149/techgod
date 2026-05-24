@@ -1,18 +1,28 @@
 interface Props {
-  previewOpen: boolean;
   profileImage: string;
-  closePreview: () => void;
+  onClose: () => void;
 }
 
-export default function ProfilePreview({
-  previewOpen,
-  profileImage,
-  closePreview,
-}: Props) {
 
-  if (!previewOpen) return null;
-
+    export default function ProfilePreview({ profileImage, onClose }: Props) {
   return (
+    <div className="fixed inset-0 bg-black/90 flex items-center justify-center">
+
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-white"
+      >
+        Close
+      </button>
+
+      <img
+        src={profileImage}
+        className="max-h-[80vh] rounded-2xl"
+      />
+
+    </div>
+    );
+
 
     <div
       className="
@@ -26,7 +36,7 @@ export default function ProfilePreview({
       <div className="relative">
 
         <button
-          onClick={closePreview}
+          onClick={onClose}
           className="
             absolute -right-3 -top-3
             rounded-full
@@ -54,6 +64,5 @@ export default function ProfilePreview({
 
     </div>
 
-  );
 
 }
