@@ -1,21 +1,54 @@
-import { createClient } from "@supabase/supabase-js";
+import { createServerClient } from "@supabase/ssr";
+
+import { cookies } from "next/headers";
+
 import { NextResponse } from "next/server";
 
-export async function GET(req: Request) {
-  const url = new URL(req.url);
-  const code = url.searchParams.get("code");
-  const origin = url.origin;
+export async function GET(request: Request) {
 
-  const supabase = createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const requestUrl = new URL(request.url);
 
-  // ✅ PKCE flow
+  const code =
+    requestUrl.searchParams.get("code");
+
   if (code) {
-    await supabase.auth.exchangeCodeForSession(code);
+
+    const cookieStore = await cookies();
+
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL!,
+      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+      {
+        cookies: {
+          get(name: string) {
+            return cookieStore.get(name)?.value;
+          },
+          set(name: string, value: string, options: any) {
+            cookieStore.set({
+              name,
+              value,
+              ...options,
+            });
+          },
+          remove(name: string, options: any) {
+            cookieStore.set({
+              name,
+              value: "",
+              ...options,
+            });
+          },
+        },
+      }
+    );
+
+    await supabase.auth.exchangeCodeForSession(
+      code
+    );
+
   }
 
-  // safety: remove hash if fallback ever happens
-  return NextResponse.redirect(`${origin}/dashboard`);
+  return NextResponse.redirect(
+    `${requestUrl.origin}/dashboard`
+  );
+
 }

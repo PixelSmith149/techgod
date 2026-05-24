@@ -6,20 +6,27 @@ export default function LoginPage() {
 
   const loginWithGoogle = async () => {
 
-    const { data, error } = await supabase.auth.signInWithOAuth({
+  const { error } =
+    await supabase.auth.signInWithOAuth({
+
       provider: "google",
+
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+
+        redirectTo:
+          `${window.location.origin}/auth/callback`,
+
       },
+
     });
 
-    console.log("OAuth response:", data);
+  if (error) {
 
-    if (error) {
-      console.error("OAuth error:", error.message);
-      alert(error.message);
-    }
-  };
+    alert(error.message);
+
+  }
+
+};
 
   return (
     <main className="min-h-screen flex items-center justify-center bg-black text-white">
