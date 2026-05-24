@@ -180,7 +180,7 @@ export default function Home() {
 
                   <div>
                     <p className="text-sm text-gray-500">
-                      Visit
+                  
                     </p>
 
                     <span className="font-semibold text-lg">

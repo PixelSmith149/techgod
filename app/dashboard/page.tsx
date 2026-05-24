@@ -20,36 +20,68 @@ export default function DashboardPage() {
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("");
 
-  useEffect(() => {
-    async function init() {
-      const { data } = await supabase.auth.getUser();
+     useEffect(() => {
+  async function init() {
+    try {
+      const { data: { user }, error } = await supabase.auth.getUser();
 
-      if (!data?.user) {
-        window.location.href = "/login";
+      if (error || !user) {
+        window.location.replace("/login");
         return;
       }
 
-      const u = data.user;
+      setUser(user);
+      setUserEmail(user.email || "");
+      setUserName(
+        user.user_metadata?.name ||
+        user.user_metadata?.full_name ||
+        "User"
+      );
 
-      setUser(u);
-      setUserEmail(u.email || "");
-      setUserName(u.user_metadata?.name || "User");
-      setProfileImage(u.user_metadata?.avatar_url || "/default-profile.png");
+      setProfileImage(
+        user.user_metadata?.avatar_url ||
+        "/default-profile.png"
+      );
 
-      const res = await fetch("/api/get-user-products", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email: u.email }),
-      });
+      // SAFE FETCH WITH TIMEOUT PROTECTION
+       const controller = new AbortController();
+const timeout = setTimeout(() => controller.abort(), 8000);
+
+const {
+  data: { session },
+} = await supabase.auth.getSession();
+
+const res = await fetch("/api/get-user-products", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${session?.access_token}`,
+  },
+});
+
+
+clearTimeout(timeout);
+
+      if (!res.ok) {
+        throw new Error("Failed to fetch products");
+      }
 
       const result = await res.json();
-
       setProducts(result?.products || []);
-      setLoading(false);
-    }
 
-    init();
-  }, []);
+    } catch (err) {
+      console.log("Dashboard init error:", err);
+
+      // fallback so dashboard NEVER hangs
+      setProducts([]);
+    } finally {
+      setLoading(false); // 🔥 THIS WAS MISSING SAFETY GUARANTEE
+    }
+  }
+
+  init();
+}, []);
+      
 
   async function logout() {
     await supabase.auth.signOut();

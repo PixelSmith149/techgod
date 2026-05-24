@@ -55,6 +55,7 @@ export default function Products() {
            transition
            hover:scale-105
            animate-pulse
+           centre-left
         "
         >
 

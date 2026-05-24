@@ -1,6 +1,8 @@
 interface Props {
-  profileImage: string;
-  onClose: () => void;
+  profileImage?: string;
+  userName?: string;
+  userEmail?: string;
+  onClose?: () => void;
 }
 
 
