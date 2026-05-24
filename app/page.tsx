@@ -74,7 +74,7 @@ export default function Home() {
             "
           >
             <Contact
-              size={25}
+              size={18}
               className="transition-transform duration-300 group-hover:scale-110"
             />
           </a>
@@ -117,6 +117,8 @@ export default function Home() {
              <h1 className="mt-6 text-4xl font-extrabold tracking-tight text-center">
                TECH GOD's HUB
              </h1>
+
+              <meta name="google-site-verification" content="4nKQRtGv3PzDwaC5Ss3v77SQ3hAVuAAk0W9g3nY60t4" />
 
              <div className="mt-2 h-1 w-20 rounded-full bg-gradient-to-r from-green-400 to-emerald-600" />
 
@@ -182,7 +184,7 @@ export default function Home() {
                     </p>
 
                     <span className="font-semibold text-lg">
-                      My {link.name}
+                      Explore My {link.name} Page
                     </span>
                   </div>
 

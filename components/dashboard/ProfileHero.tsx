@@ -73,7 +73,7 @@ export default function ProfileHero({
           <div>
 
             <h1 className="text-3xl font-bold">
-              {userName || "User"}
+              {userName || "user"}
             </h1>
 
             <div className="mt-2 flex items-center gap-2 text-gray-400">
@@ -99,9 +99,15 @@ export default function ProfileHero({
         <div className="flex flex-wrap gap-3">
 
           <button
-            onClick={() =>
-              setDarkMode(!darkMode)
-            }
+            onClick={() => {
+             setDarkMode(!darkMode);
+
+            if (!darkMode) {
+              document.documentElement.classList.add("dark");
+            } else {
+              document.documentElement.classList.remove("dark");
+           }
+      }}
             className="
               rounded-2xl
               border border-white/10
@@ -114,22 +120,22 @@ export default function ProfileHero({
 
           </button>
 
-          <Link
-            href="/settings"
-            className="
-              flex items-center gap-2
-              rounded-2xl
-              border border-white/10
-              bg-white/5
-              px-4 py-3
-            "
-          >
-
-            <Settings size={16} />
-
-            Settings
-
-          </Link>
+            <Link
+              href="/settings"
+              className="
+                flex items-center gap-2
+                rounded-2xl
+                border border-white/10
+                bg-white/5
+                px-4 py-3
+                text-sm
+                hover:border-green-500/30
+                transition
+              "
+                >
+              <Settings size={16} />
+                Settings
+            </Link>
 
           <button
             onClick={logout}

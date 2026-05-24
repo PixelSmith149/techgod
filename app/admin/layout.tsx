@@ -19,10 +19,12 @@ export default function AdminLayout({
   const check = async () => {
     const { data } = await supabase.auth.getUser();
 
-    if (!data.user) {
-      router.replace("/admin/login");
-      return;
-    }
+  ;
+
+if (!data.user && pathname !== "/admin/login") {
+  router.replace("/admin/login");
+  return;
+}
 
     setReady(true);
   };
