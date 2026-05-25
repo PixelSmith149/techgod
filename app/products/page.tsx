@@ -79,6 +79,8 @@ export default function Products() {
 
       <div className="mx-auto max-w-md">
 
+        
+
         {/* TOP BAR */}
 
         <div className="flex items-center justify-between mb-10">
