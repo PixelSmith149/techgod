@@ -19,7 +19,7 @@ export default function PayButton({ product }: Props) {
   async function handlePurchase() {
     try {
       setLoading(true);
-
+      <div> <h5> kindly sign in with same email address later </h5>  </div>
       if (!emailAddress || !fullName) {
         alert("Please fill in your name and email before continuing");
         setLoading(false);

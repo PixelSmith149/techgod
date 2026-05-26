@@ -1,5 +1,6 @@
+
 import Link from "next/link";
-import { ShieldCheck, Lock, Sparkles } from "lucide-react";
+import { ArrowLeft, ShieldCheck, Lock, Sparkles } from "lucide-react";
 
 const products = [
   {
@@ -19,7 +20,7 @@ const products = [
   },
 
   {
-    id: "dark-web-access-guide",
+    id: "dark-web-guide",
     name: "Dark Web Access Guide",
     description:
       "A beginner-friendly educational guide explaining how the dark web works, privacy basics, secure browsing, and safe learning resources.",
@@ -27,11 +28,57 @@ const products = [
   },
 ];
 
-export default function Products() {
+export default function productsPage() {
   return (
+
+
     <main className="min-h-screen bg-black text-white px-5 py-6">
 
+      {/* TOP NAV */}
+        <div className="flex items-center justify-between mb-10">
+
+          <Link
+             href="/contact"
+              className="
+                w-full
+                rounded-3xl
+                bg-gradient-to-r
+                from-green-500
+                to-emerald-600
+                p-5
+                text-lg
+                font-bold
+                text-black
+              "
+            >
+          
+            <ArrowLeft size={18} />
+            Contact Support
+          </Link>
+       
+
+         
+
+          <div className="
+                w-full
+                rounded-3xl
+                bg-gradient-to-r
+                from-black-300
+                to-emerald-600
+                p-5
+                text-lg
+                font-bold
+                text-black
+              "
+            >
+            <Lock size={25} />
+             <h1> PREMIUM   SYSTEM </h1>
+          </div>
+
+          </div>
+
       {/* HERO */}
+
       <div
         className="
           relative overflow-hidden

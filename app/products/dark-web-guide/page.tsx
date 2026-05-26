@@ -6,7 +6,7 @@ import { ArrowLeft, Lock, ShieldCheck } from "lucide-react";
 import PayButton from "@/components/PayButton";
 import { useEffect, useState } from "react";
 
-export default function DarkWebAccessGuide() {
+export default function darkwebguidePage() {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingAccess, setLoadingAccess] = useState(true);
 

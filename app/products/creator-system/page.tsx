@@ -52,7 +52,7 @@ export default function creatorsystemPage() {
         <div className="flex items-center justify-between mb-10">
 
           <Link
-            href="/productsPage"
+            href="/products"
             className="flex items-center gap-2 text-gray-400 hover:text-white transition"
           >
             <ArrowLeft size={18} />

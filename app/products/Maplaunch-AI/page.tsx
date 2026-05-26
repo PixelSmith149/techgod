@@ -1,14 +1,49 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowLeft, Lock, Sparkles, ShieldCheck } from "lucide-react";
-import PayButton from "@/components/PayButton";
+import Image from "next/image";
+import {
+  ArrowLeft,
+  Lock,
+  Sparkles,
+  ShieldCheck,
+} from "lucide-react";
 
-export default function Maplaunchai() {
+import PayButton from "@/components/PayButton";
+import { useEffect, useState } from "react";
+
+export default function MaplaunchAIPage() {
+  const [hasAccess, setHasAccess] = useState(false);
+  const [loadingAccess, setLoadingAccess] = useState(true);
+
+  useEffect(() => {
+    checkAccess();
+  }, []);
+
+  async function checkAccess() {
+    try {
+      const res = await fetch("/api/check-access", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: "",
+          product: "Maplaunch-AI",
+        }),
+      });
+
+      const data = await res.json();
+      setHasAccess(Boolean(data.access));
+    } catch (err) {
+      setHasAccess(false);
+    } finally {
+      setLoadingAccess(false);
+    }
+  }
 
   return (
     <main className="min-h-screen bg-black text-white px-5 py-10">
-
       <div className="mx-auto max-w-4xl">
 
         {/* TOP NAV */}
@@ -49,23 +84,26 @@ export default function Maplaunchai() {
 
         </div>
 
-        {/* HERO IMAGE (REAL FILE SLOT) */}
+        {/* HERO IMAGE */}
         <div className="mt-8 rounded-3xl overflow-hidden border border-white/10">
-          <img
-            src="maplaunch-ai-hero.webp"
+          <Image
+            src="/maplaunch-ai-hero.webp"
             alt="Maplaunch AI Hero Preview"
+            width={1600}
+            height={900}
             className="w-full object-cover"
+            priority
           />
         </div>
 
         {/* CONTENT */}
         <div className="mt-8 space-y-6">
 
-          {/* WHAT YOU’LL LEARN (PRESERVED STRUCTURE) */}
+          {/* WHAT YOU’LL LEARN */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
 
             <h2 className="text-xl font-semibold">
-              What You’ll Learn
+              What You’ll Access
             </h2>
 
             <ul className="mt-4 space-y-3 text-gray-300">
@@ -96,11 +134,13 @@ export default function Maplaunchai() {
 
           </div>
 
-          {/* BOTTOM IMAGE (REAL FILE SLOT) */}
+          {/* BOTTOM IMAGE */}
           <div className="rounded-3xl overflow-hidden border border-white/10">
-            <img
+            <Image
               src="/maplaunch-ai-preview.jpg"
               alt="Maplaunch AI System Preview"
+              width={1600}
+              height={900}
               className="w-full object-cover"
             />
           </div>
@@ -113,13 +153,13 @@ export default function Maplaunchai() {
             }}
           />
 
-          {/* LOCKED MAIN RESOURCE (ONLY SHOWN AS TEASER) */}
+          {/* LOCKED RESOURCE */}
           <div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
             <Lock size={14} />
             Full system unlocks after payment — includes live deployment dashboard & setup tools
           </div>
 
-          {/* PROTECTED LINK (NOT EXPOSED BEFORE PAYMENT) */}
+          {/* PROTECTED LINK */}
           <div className="hidden">
             https://maplaunch-ai.netlify.app
           </div>
@@ -127,7 +167,6 @@ export default function Maplaunchai() {
         </div>
 
       </div>
-
     </main>
   );
 }
