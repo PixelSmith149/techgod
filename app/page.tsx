@@ -11,7 +11,8 @@ import {
   FaTelegramPlane,
 } from "react-icons/fa";
 import { useEffect } from "react";
-import { Mail } from "lucide-react"; // FIX: replaced missing Contact with Mail
+import { ArrowLeft, ArrowRight, ShieldCheck, Lock, Sparkles } from "lucide-react";
+
 
 const socialLinks = [
   {
@@ -67,26 +68,29 @@ function handleProductsAccess() {
 
         <div className="relative z-10 mx-auto max-w-md px-5 py-8">
 
-          {/* TOP BAR */}
-          <div className="flex justify-end">
+         {/* TOP NAV */}
+        <div className="flex items-center justify-between mb-10">
 
-            <a
-              href="/contact"
+          <a
+             href="/contact"
               className="
-                group
-                rounded-2xl
-                border border-white/10
-                bg-green-500/50
-                p-3
-                backdrop-blur-xl
-                transition-all
-                duration-300
-                hover:bg-green-500/10
-                hover:border-green-500/30
+                w-full
+                rounded-3xl
+                bg-gradient-to-r
+                from-green-500
+                to-emerald-600
+                p-5
+                text-lg
+                font-bold
+                text-black
               "
             >
-              <Mail size={18} />
-            </a>
+          
+            <ArrowRight size={18} />
+            Contact Support
+          </a>
+       
+
 
           </div>
 

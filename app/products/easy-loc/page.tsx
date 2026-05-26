@@ -12,7 +12,7 @@ import {
 import PayButton from "@/components/PayButton";
 import { useEffect, useState } from "react";
 
-export default function MaplaunchAIPage() {
+export default function easylocPage() {
   const [hasAccess, setHasAccess] = useState(false);
   const [loadingAccess, setLoadingAccess] = useState(true);
 
@@ -29,7 +29,7 @@ export default function MaplaunchAIPage() {
         },
         body: JSON.stringify({
           email: "",
-          product: "Maplaunch-AI",
+          product: "easy-loc",
         }),
       });
 
@@ -70,11 +70,11 @@ export default function MaplaunchAIPage() {
           <div className="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2 text-sm text-green-300">
 
             <Sparkles size={16} />
-            Maplaunch AI System
+            Easy LOC System
           </div>
 
           <h1 className="mt-6 text-4xl font-bold leading-tight">
-            Maplaunch AI — Local Business Visibility System
+            Easy LOC — Local Business Visibility System
           </h1>
 
           <p className="mt-4 text-gray-400 leading-8">
@@ -99,7 +99,7 @@ export default function MaplaunchAIPage() {
         {/* CONTENT */}
         <div className="mt-8 space-y-6">
 
-          {/* WHAT YOU’LL LEARN */}
+          {/* WHAT YOU’LL ACCESS */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
 
             <h2 className="text-xl font-semibold">
@@ -148,10 +148,40 @@ export default function MaplaunchAIPage() {
           {/* PAY BUTTON */}
           <PayButton
             product={{
-              id: "maplaunch-ai",
+              id: "easy-loc",
               price: 110,
             }}
           />
+
+          {/* LOCKED RESOURCE (NOW PROTECTED LIKE YOUR SECOND FILE) */}
+          <div className="mt-8">
+            <h2 className="text-xl font-bold mb-3">
+              Main Resource
+            </h2>
+
+            <p className="text-gray-400 text-sm mb-4">
+              Full system access is available below.
+            </p>
+
+            {loadingAccess ? (
+              <div className="text-gray-400">Checking access...</div>
+            ) : hasAccess ? (
+              <a
+                href="https://maplaunch-ai.netlify.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex rounded-2xl bg-green-500 px-5 py-3 font-bold text-black hover:scale-[1.02] transition"
+              >
+                Open Easy LOC 🚀
+              </a>
+            ) : (
+              <div className="inline-flex items-center gap-2 rounded-2xl bg-gray-800 px-5 py-3 text-gray-400 font-bold cursor-not-allowed">
+                <Lock size={16} />
+                Locked — Complete payment to unlock👇
+              </div>
+            )}
+
+          </div>
 
           {/* LOCKED RESOURCE */}
           <div className="flex items-center gap-2 text-gray-500 text-sm mt-2">

@@ -12,8 +12,8 @@ const products = [
   },
 
   {
-    id: "maplaunch-ai",
-    name: "MapLaunch AI",
+    id: "easy-loc",
+    name: "Easy LOC System",
     description:
       "An AI-powered business visibility system helping entrepreneurs optimize their online presence and attract customers directly from Google search.",
     badge: "NEW",
