@@ -19,27 +19,33 @@ export async function POST(req: Request) {
     // verify user session
     const {
       data: { user },
+      error: userError,
     } = await supabase.auth.getUser(token);
 
-    if (!user) {
+    if (userError || !user) {
       return NextResponse.json({ products: [] });
     }
 
+    // fetch purchased products
     const { data, error } = await supabase
       .from("purchases")
       .select("*")
       .eq("email", user.email);
 
     if (error) {
+      console.log("DB error:", error);
       return NextResponse.json({ products: [] });
     }
 
     return NextResponse.json({
-      products: data || [],
+      products: data ?? [],
     });
 
   } catch (err) {
-    console.log(err);
-    return NextResponse.json({ products: [] });
+    console.log("API error:", err);
+
+    return NextResponse.json({
+      products: [],
+    });
   }
 }

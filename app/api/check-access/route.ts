@@ -7,24 +7,24 @@ const supabase = createClient(
 );
 
 export async function POST(req: Request) {
-  const { email, product, token, user_id } =
-    await req.json();
+  const { email, product } = await req.json();
 
-  if (!email || !product || !user_id || !token) {
+  // 🔐 STRICT MINIMUM REQUIREMENT
+  if (!email || !product) {
     return NextResponse.json(
       { access: false },
       { status: 400 }
     );
   }
 
-  // 🔐 STRICT DB MATCH (NO EMAIL RELIANCE)
+  // 🔐 CHECK REAL PURCHASE IN DATABASE
   const { data, error } = await supabase
     .from("purchases")
-    .select("*")
-    .eq("user_id", user_id)
+    .select("id")
+    .eq("email", email)
     .eq("product", product)
-    .eq("access_token", token)
-    .single();
+    .limit(1)
+    .maybeSingle();
 
   if (error || !data) {
     return NextResponse.json({ access: false });

@@ -22,6 +22,8 @@ export default function DashboardPage() {
 
      useEffect(() => {
   async function init() {
+    let timeoutId: any;
+
     try {
       const { data: { user }, error } = await supabase.auth.getUser();
 
@@ -29,6 +31,7 @@ export default function DashboardPage() {
         window.location.replace("/login");
         return;
       }
+
 
       setUser(user);
       setUserEmail(user.email || "");
@@ -43,39 +46,45 @@ export default function DashboardPage() {
         "/default-profile.png"
       );
 
-      // SAFE FETCH WITH TIMEOUT PROTECTION
-       const controller = new AbortController();
-const timeout = setTimeout(() => controller.abort(), 8000);
+      // SAFE SESSION FETCH
+      const { data: { session } } =
+        await supabase.auth.getSession();
 
-const {
-  data: { session },
-} = await supabase.auth.getSession();
+      const controller = new AbortController();
 
-const res = await fetch("/api/get-user-products", {
-  method: "POST",
-  headers: {
-    "Content-Type": "application/json",
-    Authorization: `Bearer ${session?.access_token}`,
-  },
-});
+      timeoutId = setTimeout(() => {
+        controller.abort();
+      }, 8000);
 
+      const res = await fetch("/api/get-user-products", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: user.email,
+        }),
+        signal: controller.signal,
+      });
 
-clearTimeout(timeout);
+      clearTimeout(timeoutId);
 
       if (!res.ok) {
-        throw new Error("Failed to fetch products");
+        throw new Error("API failed");
       }
 
       const result = await res.json();
-      setProducts(result?.products || []);
+
+      setProducts(result?.products ?? []);
 
     } catch (err) {
       console.log("Dashboard init error:", err);
 
-      // fallback so dashboard NEVER hangs
+      // 🔥 CRITICAL FALLBACK (prevents infinite loading bugs)
       setProducts([]);
+
     } finally {
-      setLoading(false); // 🔥 THIS WAS MISSING SAFETY GUARANTEE
+      setLoading(false);
     }
   }
 
@@ -91,7 +100,7 @@ clearTimeout(timeout);
   if (loading) {
     return (
       <div className="text-white min-h-screen flex items-center justify-center">
-        Loading dashboard...
+        Loading Your Dashboard...✅
       </div>
     );
   }

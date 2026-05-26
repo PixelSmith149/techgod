@@ -1,53 +1,17 @@
 "use client";
+
 import Link from "next/link";
-import { ArrowLeft, Lock, Sparkles } from "lucide-react";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { ArrowLeft, Lock, Sparkles, ShieldCheck } from "lucide-react";
+import PayButton from "@/components/PayButton";
 
-export default function MapLaunchPage() {
-  const [allowed, setAllowed] = useState(false);
-  const router = useRouter();
-
-  useEffect(() => {
-    const email = localStorage.getItem("user_email");
-
-    if (!email) {
-      router.push("/products");
-      return;
-    }
-
-    fetch("/api/check-access", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        product: "MapLaunch AI",
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.access) setAllowed(true);
-        else router.push("/products");
-      });
-  }, [router]);
-
-  if (!allowed) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center">
-        Checking access...
-      </div>
-    );
-  }
-
+export default function Maplaunchai() {
 
   return (
-    <main className="min-h-screen bg-black text-white px-5 py-8">
+    <main className="min-h-screen bg-black text-white px-5 py-10">
 
-      <div className="mx-auto max-w-3xl">
+      <div className="mx-auto max-w-4xl">
 
-        {/* Top */}
+        {/* TOP NAV */}
         <div className="flex items-center justify-between mb-10">
 
           <Link
@@ -55,70 +19,110 @@ export default function MapLaunchPage() {
             className="flex items-center gap-2 text-gray-400 hover:text-white transition"
           >
             <ArrowLeft size={18} />
-            Back
+            Back to Store
           </Link>
 
-          <div className="flex items-center gap-2 text-green-400">
-            <Lock size={18} />
-            Protected Access
+          <div className="flex items-center gap-2 text-green-400 animate-pulse">
+            <ShieldCheck size={18} />
+            Protected System Access
           </div>
 
         </div>
 
-        {/* Hero */}
-        <div className="rounded-3xl border border-green-500/20 bg-gradient-to-br from-green-500/10 to-black p-8">
+        {/* HERO */}
+        <div className="rounded-[32px] border border-green-500/20 bg-gradient-to-br from-green-500/10 via-black to-emerald-500/10 p-8">
 
           <div className="inline-flex items-center gap-2 rounded-full border border-green-500/20 bg-green-500/10 px-4 py-2 text-sm text-green-300">
+
             <Sparkles size={16} />
-            A system built to place your business on a map with ease
+            Maplaunch AI System
           </div>
 
           <h1 className="mt-6 text-4xl font-bold leading-tight">
-            Maplaunch AI
+            Maplaunch AI — Local Business Visibility System
           </h1>
 
           <p className="mt-4 text-gray-400 leading-8">
-            A powerful AI-driven system designed to effortlessly place your business on the map, ensuring maximum visibility and growth.
+            A smart AI-powered system that helps you place your business on Google Maps,
+            improve visibility, and attract real customers from local search traffic.
           </p>
 
         </div>
 
-        {/* Content */}
+        {/* HERO IMAGE (REAL FILE SLOT) */}
+        <div className="mt-8 rounded-3xl overflow-hidden border border-white/10">
+          <img
+            src="maplaunch-ai-hero.webp"
+            alt="Maplaunch AI Hero Preview"
+            className="w-full object-cover"
+          />
+        </div>
+
+        {/* CONTENT */}
         <div className="mt-8 space-y-6">
 
+          {/* WHAT YOU’LL LEARN (PRESERVED STRUCTURE) */}
           <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
 
             <h2 className="text-xl font-semibold">
-              What You’ll Gain Access To
+              What You’ll Learn
             </h2>
 
             <ul className="mt-4 space-y-3 text-gray-300">
-              <li>• Automatic Google Maps business listing workflow</li>
-              <li>• Built-in visibility optimization structure</li>
-              <li>• Real-time tracking of listing status</li>
-              <li>• Step-by-step submission system (no confusion, no tech skills needed)</li>
-              <li>• Designed for fast setup and instant deployment</li>
+
+              <li>• How to instantly list your business on Google Maps</li>
+              <li>• How to rank higher in local search results</li>
+              <li>• How AI improves business discovery & visibility</li>
+              <li>• How to convert map traffic into paying customers</li>
+
             </ul>
 
           </div>
 
-          {/* Access Button */}
-          <a
-            href="https://maplaunch.netlify.app/"
-            target="_blank"
-            className="
-              flex items-center justify-center
-              rounded-2xl
-              bg-gradient-to-r
-              from-green-500
-              to-emerald-600
-              px-6 py-4
-              font-bold text-black
-              transition hover:scale-[1.02]
-            "
-          >
-            Launch Your Business on the Map
-          </a>
+          {/* WHY THIS WORKS */}
+          <div className="rounded-3xl border border-white/10 bg-white/5 p-6">
+
+            <h2 className="text-xl font-semibold">
+              Why This Works
+            </h2>
+
+            <p className="mt-3 text-gray-400 leading-7">
+
+              This system works because it focuses on real search intent.
+              People already searching for businesses are converted into customers automatically
+              when your listing is properly optimized.
+
+            </p>
+
+          </div>
+
+          {/* BOTTOM IMAGE (REAL FILE SLOT) */}
+          <div className="rounded-3xl overflow-hidden border border-white/10">
+            <img
+              src="/maplaunch-ai-preview.jpg"
+              alt="Maplaunch AI System Preview"
+              className="w-full object-cover"
+            />
+          </div>
+
+          {/* PAY BUTTON */}
+          <PayButton
+            product={{
+              id: "maplaunch-ai",
+              price: 110,
+            }}
+          />
+
+          {/* LOCKED MAIN RESOURCE (ONLY SHOWN AS TEASER) */}
+          <div className="flex items-center gap-2 text-gray-500 text-sm mt-2">
+            <Lock size={14} />
+            Full system unlocks after payment — includes live deployment dashboard & setup tools
+          </div>
+
+          {/* PROTECTED LINK (NOT EXPOSED BEFORE PAYMENT) */}
+          <div className="hidden">
+            https://maplaunch-ai.netlify.app
+          </div>
 
         </div>
 
